@@ -109,29 +109,6 @@ type BufferedWriteSyncer struct {
 	done        chan struct{} // closed when flushLoop has stopped
 }
 
-func (s *BufferedWriteSyncer) initialize() {
-	size := s.Size
-	if size == 0 {
-		size = _defaultBufferSize
-	}
-
-	flushInterval := s.FlushInterval
-	if flushInterval == 0 {
-		flushInterval = _defaultFlushInterval
-	}
-
-	if s.Clock == nil {
-		s.Clock = DefaultClock
-	}
-
-	s.ticker = s.Clock.NewTicker(flushInterval)
-	s.writer = bufio.NewWriterSize(s.WS, size)
-	s.stop = make(chan struct{})
-	s.done = make(chan struct{})
-	s.initialized = true
-	go s.flushLoop()
-}
-
 // Write writes log data into buffer syncer directly, multiple Write calls will be batched,
 // and log data will be flushed to disk when the buffer is full or periodically.
 func (s *BufferedWriteSyncer) Write(bs []byte) (int, error) {
@@ -139,7 +116,26 @@ func (s *BufferedWriteSyncer) Write(bs []byte) (int, error) {
 	defer s.mu.Unlock()
 
 	if !s.initialized {
-		s.initialize()
+		size := s.Size
+		if size == 0 {
+			size = _defaultBufferSize
+		}
+
+		flushInterval := s.FlushInterval
+		if flushInterval == 0 {
+			flushInterval = _defaultFlushInterval
+		}
+
+		if s.Clock == nil {
+			s.Clock = DefaultClock
+		}
+
+		s.ticker = s.Clock.NewTicker(flushInterval)
+		s.writer = bufio.NewWriterSize(s.WS, size)
+		s.stop = make(chan struct{})
+		s.done = make(chan struct{})
+		s.initialized = true
+		go s.flushLoop()
 	}
 
 	// To avoid partial writes from being flushed, we manually flush the existing buffer if:
