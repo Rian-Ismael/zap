@@ -531,7 +531,7 @@ func TestEncoderConfiguration(t *testing.T) {
 
 	for i, tt := range tests {
 		json := NewJSONEncoder(tt.cfg)
-		console := NewConsoleEncoder(tt.cfg)
+		console := RNewConsoleEncoder(tt.cfg)
 		if tt.extra != nil {
 			tt.extra(json)
 			tt.extra(console)

@@ -68,7 +68,7 @@ func TestConsoleEncodeEntry(t *testing.T) {
 
 	cfg := testEncoderConfig()
 	cfg.EncodeTime = RFC3339TimeEncoder
-	enc := NewConsoleEncoder(cfg)
+	enc := RNewConsoleEncoder(cfg)
 
 	for _, tt := range tests {
 		t.Run(tt.desc, func(t *testing.T) {
@@ -110,7 +110,7 @@ func TestConsoleSeparator(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		console := NewConsoleEncoder(encoderTestEncoderConfig(tt.separator))
+		console := RNewConsoleEncoder(encoderTestEncoderConfig(tt.separator))
 		t.Run(tt.desc, func(t *testing.T) {
 			entry := testEntry
 			consoleOut, err := console.EncodeEntry(entry, nil)

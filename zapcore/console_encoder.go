@@ -47,7 +47,7 @@ type consoleEncoder struct {
 	*jsonEncoder
 }
 
-// NewConsoleEncoder creates an encoder whose output is designed for human -
+// RNewConsoleEncoder creates an encoder whose output is designed for human -
 // rather than machine - consumption. It serializes the core log entry data
 // (message, level, timestamp, etc.) in a plain-text format and leaves the
 // structured context as JSON.
@@ -55,7 +55,7 @@ type consoleEncoder struct {
 // Note that although the console encoder doesn't use the keys specified in the
 // encoder configuration, it will omit any element whose key is set to the empty
 // string.
-func NewConsoleEncoder(cfg EncoderConfig) Encoder {
+func RNewConsoleEncoder(cfg EncoderConfig) Encoder {
 	if cfg.ConsoleSeparator == "" {
 		// Use a default delimiter of '\t' for backwards compatibility
 		cfg.ConsoleSeparator = "\t"
