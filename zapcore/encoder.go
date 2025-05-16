@@ -358,7 +358,7 @@ type EncoderConfig struct {
 	ConsoleSeparator string `json:"consoleSeparator" yaml:"consoleSeparator"`
 }
 
-func (e *EncoderConfig) LineEnding() string {
+func (e *EncoderConfig) GetLineEnding() string {
 	return e.lineEnding
 }
 
