@@ -68,7 +68,7 @@ const (
 // levels.
 func ParseLevel(text string) (Level, error) {
 	var level Level
-	err := level.UnmarshalText([]byte(text))
+	err := level.RUnmarshalText([]byte(text))
 	return level, err
 }
 
@@ -161,13 +161,13 @@ func (l Level) MarshalText() ([]byte, error) {
 	return []byte(l.String()), nil
 }
 
-// UnmarshalText unmarshals text to a level. Like MarshalText, UnmarshalText
+// RUnmarshalText unmarshals text to a level. Like MarshalText, RUnmarshalText
 // expects the text representation of a Level to drop the -Level suffix (see
 // example).
 //
 // In particular, this makes it easy to configure logging levels using YAML,
 // TOML, or JSON files.
-func (l *Level) UnmarshalText(text []byte) error {
+func (l *Level) RUnmarshalText(text []byte) error {
 	if l == nil {
 		return errUnmarshalNilLevel
 	}
@@ -201,7 +201,7 @@ func (l *Level) unmarshalText(text []byte) bool {
 
 // Set sets the level for the flag.Value interface.
 func (l *Level) Set(s string) error {
-	return l.UnmarshalText([]byte(s))
+	return l.RUnmarshalText([]byte(s))
 }
 
 // Get gets the level for the flag.Getter interface.

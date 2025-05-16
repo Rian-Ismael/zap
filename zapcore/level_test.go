@@ -71,7 +71,7 @@ func TestLevelText(t *testing.T) {
 		}
 
 		var unmarshaled Level
-		err := unmarshaled.UnmarshalText([]byte(tt.text))
+		err := unmarshaled.RUnmarshalText([]byte(tt.text))
 		assert.NoError(t, err, `Unexpected error unmarshaling text %q to level.`, tt.text)
 		assert.Equal(t, tt.level, unmarshaled, `Text %q unmarshaled to an unexpected level.`, tt.text)
 	}
@@ -81,7 +81,7 @@ func TestLevelText(t *testing.T) {
 	t.Run("unmarshal warning compatibility", func(t *testing.T) {
 		var unmarshaled Level
 		input := []byte("warning")
-		err := unmarshaled.UnmarshalText(input)
+		err := unmarshaled.RUnmarshalText(input)
 		assert.NoError(t, err, `Unexpected error unmarshaling text %q to level.`, string(input))
 		assert.Equal(t, WarnLevel, unmarshaled, `Text %q unmarshaled to an unexpected level.`, string(input))
 	})
@@ -124,7 +124,7 @@ func TestCapitalLevelsParse(t *testing.T) {
 	}
 	for _, tt := range tests {
 		var unmarshaled Level
-		err := unmarshaled.UnmarshalText([]byte(tt.text))
+		err := unmarshaled.RUnmarshalText([]byte(tt.text))
 		assert.NoError(t, err, `Unexpected error unmarshaling text %q to level.`, tt.text)
 		assert.Equal(t, tt.level, unmarshaled, `Text %q unmarshaled to an unexpected level.`, tt.text)
 	}
@@ -155,7 +155,7 @@ func TestWeirdLevelsParse(t *testing.T) {
 	}
 	for _, tt := range tests {
 		var unmarshaled Level
-		err := unmarshaled.UnmarshalText([]byte(tt.text))
+		err := unmarshaled.RUnmarshalText([]byte(tt.text))
 		assert.NoError(t, err, `Unexpected error unmarshaling text %q to level.`, tt.text)
 		assert.Equal(t, tt.level, unmarshaled, `Text %q unmarshaled to an unexpected level.`, tt.text)
 	}
@@ -173,13 +173,13 @@ func TestLevelNils(t *testing.T) {
 		_, _ = l.MarshalText() // should panic
 	}, "Expected to panic when marshalling a nil level.")
 
-	err := l.UnmarshalText([]byte("debug"))
+	err := l.RUnmarshalText([]byte("debug"))
 	assert.Equal(t, errUnmarshalNilLevel, err, "Expected to error unmarshalling into a nil Level.")
 }
 
 func TestLevelUnmarshalUnknownText(t *testing.T) {
 	var l Level
-	err := l.UnmarshalText([]byte("foo"))
+	err := l.RUnmarshalText([]byte("foo"))
 	assert.ErrorContains(t, err, "unrecognized level", "Expected unmarshaling arbitrary text to fail.")
 }
 
