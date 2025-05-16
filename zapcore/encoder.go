@@ -339,7 +339,7 @@ type EncoderConfig struct {
 	FunctionKey    string `json:"functionKey" yaml:"functionKey"`
 	StacktraceKey  string `json:"stacktraceKey" yaml:"stacktraceKey"`
 	SkipLineEnding bool   `json:"skipLineEnding" yaml:"skipLineEnding"`
-	LineEnding     string `json:"lineEnding" yaml:"lineEnding"`
+	lineEnding     string `json:"lineEnding" yaml:"lineEnding"`
 	// Configure the primitive representations of common complex types. For
 	// example, some users may want all time.Times serialized as floating-point
 	// seconds since epoch, while others may prefer ISO8601 strings.
@@ -356,6 +356,14 @@ type EncoderConfig struct {
 	// Configures the field separator used by the console encoder. Defaults
 	// to tab.
 	ConsoleSeparator string `json:"consoleSeparator" yaml:"consoleSeparator"`
+}
+
+func (e *EncoderConfig) LineEnding() string {
+	return e.lineEnding
+}
+
+func (e *EncoderConfig) SetLineEnding(lineEnding string) {
+	e.lineEnding = lineEnding
 }
 
 // ObjectEncoder is a strongly-typed, encoding-agnostic interface for adding a

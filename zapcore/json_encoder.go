@@ -80,9 +80,9 @@ func NewJSONEncoder(cfg EncoderConfig) Encoder {
 
 func newJSONEncoder(cfg EncoderConfig, spaced bool) *jsonEncoder {
 	if cfg.SkipLineEnding {
-		cfg.LineEnding = ""
-	} else if cfg.LineEnding == "" {
-		cfg.LineEnding = DefaultLineEnding
+		cfg.lineEnding = ""
+	} else if cfg.lineEnding == "" {
+		cfg.lineEnding = DefaultLineEnding
 	}
 
 	// If no EncoderConfig.NewReflectedEncoder is provided by the user, then use default
@@ -423,7 +423,7 @@ func (enc *jsonEncoder) EncodeEntry(ent Entry, fields []Field) (*buffer.Buffer, 
 		final.AddString(final.StacktraceKey, ent.Stack)
 	}
 	final.buf.AppendByte('}')
-	final.buf.AppendString(final.LineEnding)
+	final.buf.AppendString(final.lineEnding)
 
 	ret := final.buf
 	putJSONEncoder(final)
