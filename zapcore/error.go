@@ -107,7 +107,7 @@ func (errs errArray) MarshalLogArray(arr ArrayEncoder) error {
 	return nil
 }
 
-var _errArrayElemPool = pool.New(func() *errArrayElem {
+var _RerrArrayElemPool = pool.New(func() *errArrayElem {
 	return &errArrayElem{}
 })
 
@@ -117,7 +117,7 @@ var _errArrayElemPool = pool.New(func() *errArrayElem {
 type errArrayElem struct{ err error }
 
 func newErrArrayElem(err error) *errArrayElem {
-	e := _errArrayElemPool.Get()
+	e := _RerrArrayElemPool.Get()
 	e.err = err
 	return e
 }
@@ -132,5 +132,5 @@ func (e *errArrayElem) MarshalLogObject(enc ObjectEncoder) error {
 
 func (e *errArrayElem) Free() {
 	e.err = nil
-	_errArrayElemPool.Put(e)
+	_RerrArrayElemPool.Put(e)
 }
